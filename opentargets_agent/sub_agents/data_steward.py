@@ -45,6 +45,8 @@ data_steward_agent = Agent(
          * mechanismsOfAction with targetName, actionType, and target details
     
     WORKFLOW GUIDELINES:
+
+    CRUCIAL: Always convert the entity names provided in the question to their respective IDs using the appropriate tool before making further calls.
     
     0. PLANNING: Before making any tool calls, analyze the question and create a step-by-step plan:
        - Identify what information you need to retrieve
