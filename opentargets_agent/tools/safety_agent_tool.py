@@ -112,9 +112,52 @@ def get_target_chemical_probes(ensembl_ids: List[str]) -> Dict[str, Any]:
 
 def get_target_prioritization(ensembl_ids: List[str]) -> Dict[str, Any]:
     """
-    Retrieve target prioritization scores from various sources for a list of targets using the Open Targets GraphQL API.
+    Retrieve comprehensive target prioritization scores for evaluating potential drug targets using the Open Targets GraphQL API.
 
-    This function queries prioritization scores for each target and returns a dictionary mapping each Ensembl ID to its prioritization data.
+    Target prioritization is a scoring system that helps researchers assess the viability and promise of potential drug targets
+    across four main dimensions:
+
+    1. Precedence: Clinical history and validation
+       - Measures maximum clinical trial phase reached for the target
+       - Source: ChEMBL database
+       - Higher scores indicate targets with clinical precedent
+
+    2. Tractability: Druggability assessment
+       - Evaluates protein characteristics such as membrane location, secretion status, ligand binding,
+         small molecule interactions, and predicted binding pockets
+       - Indicates how amenable the target is to drug development
+
+    3. Doability: Research feasibility
+       - Assesses practical aspects like mouse ortholog identity, availability of chemical probes,
+         and comparative genomics
+       - Measures how easily the target can be studied experimentally
+
+    4. Safety: Risk assessment
+       - Analyzes potential liabilities through genetic constraint metrics (gnomAD), mouse phenotypes,
+         gene essentiality (DepMap), known safety events, cancer driver status, and tissue specificity
+       - Identifies potential adverse effects or toxicity concerns
+
+    Interpreting Scores:
+    The prioritization system uses a "traffic light" scoring approach where:
+    - Green (positive values) indicates potentially favorable attributes
+    - Red (negative values) suggests potentially unfavorable attributes or concerns
+
+    Score Ranges and Interpretation:
+    - Precedence (0 to 1): Based on maximum clinical trial phase; higher = more clinical validation
+    - Tractability (0, 1, or NA):
+      * 1 = Positive druggability features present (membrane protein, binding pockets, etc.)
+      * 0 = Feature absent or neutral
+      * NA = No data available
+    - Genetic Constraint (-1 to 1):
+      * -1 = Least tolerant to loss-of-function (essential gene, higher safety concern)
+      * 1 = Most tolerant to loss-of-function (lower safety concern)
+      * 0 = Neutral constraint
+    - Safety Events (-1 or 0):
+      * -1 = Known adverse events, cancer driver genes, or significant safety concerns
+      * 0 = No known safety concerns
+    - Tissue Specificity (-1 to 1):
+      * Higher values = More tissue-specific expression (potentially safer, fewer off-target effects)
+      * -1 = Low specificity (expressed broadly, higher risk of off-target effects)
 
     Args:
         ensembl_ids (List[str]): List of Ensembl gene IDs.
@@ -123,7 +166,8 @@ def get_target_prioritization(ensembl_ids: List[str]) -> Dict[str, Any]:
         Dict[str, Any]: Dictionary where keys are Ensembl IDs and values are prioritization information or error details.
 
     Prioritization information includes:
-        - items: List of key-value pairs representing prioritization metrics from different sources
+        - items: List of key-value pairs where keys are metric names (e.g., 'clinical_precedence',
+                'predicted_tractability', 'mouse_ortholog') and values are the corresponding scores or assessments
     """
     graphql_query = """
     query TargetPrioritisation($ensemblId: String!) {
