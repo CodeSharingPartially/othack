@@ -4,6 +4,7 @@ from google.adk.agents import Agent
 
 from opentargets_agent.sub_agents.biologist import biologist_agent
 from opentargets_agent.sub_agents.data_steward import data_steward_agent
+from opentargets_agent.tools.data_steward_tool import get_disease_targets, get_target_drugs, search_disease_by_name, get_drugs_info
     
 
 root_agent = Agent(
@@ -98,4 +99,5 @@ root_agent = Agent(
     """
     ),
     sub_agents=[data_steward_agent, biologist_agent],
+    tools=[search_disease_by_name]
 )
