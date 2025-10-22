@@ -35,7 +35,7 @@ Create the folder
 
 
 You can run it :
-
-    adk run my_agent
-    # or
-    adk web --port 8000 my_agent
+    # terminal
+    adk run # not needed? my_agent
+    # web interface
+    adk web --port 8000 # not needed? my_agent
