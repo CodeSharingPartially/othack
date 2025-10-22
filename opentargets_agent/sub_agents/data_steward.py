@@ -10,7 +10,9 @@ data_steward_agent = Agent(
     Capable of searching diseases, finding disease-target associations with evidence scores, 
     discovering known drugs for specific targets, and retrieving detailed drug information 
     including mechanisms of action and clinical trial phases. Ideal for drug discovery research, 
-    target validation, and therapeutic hypothesis generation.""",
+    target validation, and therapeutic hypothesis generation.
+    I have access to the following tools: get_disease_targets, get_target_drugs, search_disease_by_name, get_drugs_info.
+    """,
     instruction="""
     You are a data steward agent that interacts with the Open Targets API to retrieve data about diseases, targets, and drugs.
     You are given a question and you need to use the Open Targets API to retrieve the data needed to answer the question.

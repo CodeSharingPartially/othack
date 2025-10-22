@@ -22,7 +22,7 @@ root_agent = Agent(
                 
                 0. **answer general questions** about the Open Targets Platform and its data.
                 1. **Clarify and scope user questions** related to Open Targets.
-                2. **Define an actionable workflow** to solve the question.
+                2. **Define an actionable workflow** to solve the question, based on the agents capabilities.
                 3. **Delegate subtasks** to specialized sub-agents that can handle execution, data retrieval, or analysis.
                 4. **Integrate and summarize** results into coherent, actionable insights.
 
