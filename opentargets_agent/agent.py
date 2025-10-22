@@ -2,41 +2,18 @@ import datetime
 # from zoneinfo import ZoneInfo
 from google.adk.agents import Agent
 
-def data_steward(target: str) -> dict:
-    """Retrieves data related to a specified target.
-
-    Args:
-        target (str): The name of the target for which to retrieve data.
-
-    Returns:
-        dict: status and result or error msg.
-    """
-    if target.lower() == "braf":
-        return {
-            "status": "success",
-            "report": (
-                "The BRAF gene is located on chromosome 7 and is involved in cell signaling."
-            )
-        }
-    else:
-        return {
-            "status": "error",
-            "error_message": f"Data for target '{target}' is not available.",
-        }
+from opentargets_agent.sub_agents.data_steward import data_steward_agent
     
 
 root_agent = Agent(
     name="PI_agent",
-    model="gemini-2.0-flash",
+    model="gemini-2.5-pro",
     description=(
         "Agent to answer questions about the time and weather in a city."
     ),
     instruction=(
             """
                 You are the **Root Agent**, acting as a **Principal Investigator / Product Owner** overseeing a team of specialized sub-agents that work with the **Open Targets Platform** and related biomedical data sources.
-
-def get_diseases(city: str) -> dict:
-    """Returns the current time in a specified city.
 
                 1. **Clarify and scope user questions** related to Open Targets.
                 2. **Define an actionable workflow** to solve the question.
@@ -109,5 +86,5 @@ def get_diseases(city: str) -> dict:
 
     """
     ),
-    tools=[data_steward],
+    sub_agents=[data_steward_agent],
 )
