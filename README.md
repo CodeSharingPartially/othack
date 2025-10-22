@@ -14,6 +14,7 @@ python -m venv .venv
 # Windows PowerShell: .venv\Scripts\Activate.ps1
 
 pip install google-adk
+pip install litellm
 
 
 ```
@@ -41,7 +42,7 @@ To deploy it to Google Cloud:
 gcloud auth login
 
 # Change the service_name to your own
-adk deploy cloud_run --project=opentargets-hack25cam-309 --region=europe-west1 --service_name=paultestservice --app_name=opentargets-agent --with_ui ./
+adk deploy cloud_run --project=opentargets-hack25cam-309 --region=europe-west1 --service_name=paultestservice --app_name=opentargets-agent --with_ui ./opentargets_agent
 ```
 
 For Windows user, due to the bug in ADK, you need to use WSL. Also gcloud is the only way to authenticate, the API key simply does not work.
