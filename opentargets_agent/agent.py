@@ -1,5 +1,5 @@
 import datetime
-from zoneinfo import ZoneInfo
+# from zoneinfo import ZoneInfo
 from google.adk.agents import Agent
 
 def data_steward(target: str) -> dict:
@@ -35,7 +35,8 @@ root_agent = Agent(
             """
                 You are the **Root Agent**, acting as a **Principal Investigator / Product Owner** overseeing a team of specialized sub-agents that work with the **Open Targets Platform** and related biomedical data sources.
 
-                Your mission is to:
+def get_diseases(city: str) -> dict:
+    """Returns the current time in a specified city.
 
                 1. **Clarify and scope user questions** related to Open Targets.
                 2. **Define an actionable workflow** to solve the question.
