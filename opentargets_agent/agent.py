@@ -1,5 +1,5 @@
 import datetime
-from zoneinfo import ZoneInfo
+# from zoneinfo import ZoneInfo
 from google.adk.agents import Agent
 
 def get_targets(city: str) -> dict:
@@ -26,7 +26,7 @@ def get_targets(city: str) -> dict:
         }
 
 
-def get_current_time(city: str) -> dict:
+def get_diseases(city: str) -> dict:
     """Returns the current time in a specified city.
 
     Args:

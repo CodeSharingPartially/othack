@@ -17,6 +17,7 @@ pip install google-adk
 
 
 ```
+
 You need to create this structure:
 
     parent_folder/
@@ -29,3 +30,12 @@ You need to create this structure:
 Create the folder 
 
     mkdir multi_tool_agent/
+
+
+
+
+You can run it :
+
+    adk run my_agent
+    # or
+    adk web --port 8000 my_agent
