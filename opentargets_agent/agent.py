@@ -2,66 +2,111 @@ import datetime
 from zoneinfo import ZoneInfo
 from google.adk.agents import Agent
 
-def get_targets(city: str) -> dict:
-    """Retrieves the current weather report for a specified city.
+def data_steward(target: str) -> dict:
+    """Retrieves data related to a specified target.
 
     Args:
-        city (str): The name of the city for which to retrieve the weather report.
+        target (str): The name of the target for which to retrieve data.
 
     Returns:
         dict: status and result or error msg.
     """
-    if city.lower() == "new york":
+    if target.lower() == "braf":
         return {
             "status": "success",
             "report": (
-                "The weather in New York is sunny with a temperature of 25 degrees"
-                " Celsius (77 degrees Fahrenheit)."
-            ),
+                "The BRAF gene is located on chromosome 7 and is involved in cell signaling."
+            )
         }
     else:
         return {
             "status": "error",
-            "error_message": f"Weather information for '{city}' is not available.",
+            "error_message": f"Data for target '{target}' is not available.",
         }
-
-
-def get_current_time(city: str) -> dict:
-    """Returns the current time in a specified city.
-
-    Args:
-        city (str): The name of the city for which to retrieve the current time.
-
-    Returns:
-        dict: status and result or error msg.
-    """
-
-    if city.lower() == "new york":
-        tz_identifier = "America/New_York"
-    else:
-        return {
-            "status": "error",
-            "error_message": (
-                f"Sorry, I don't have timezone information for {city}."
-            ),
-        }
-
-    tz = ZoneInfo(tz_identifier)
-    now = datetime.datetime.now(tz)
-    report = (
-        f'The current time in {city} is {now.strftime("%Y-%m-%d %H:%M:%S %Z%z")}'
-    )
-    return {"status": "success", "report": report}
-
+    
 
 root_agent = Agent(
-    name="weather_time_agent",
+    name="PI_agent",
     model="gemini-2.0-flash",
     description=(
         "Agent to answer questions about the time and weather in a city."
     ),
     instruction=(
-        "You are a helpful agent who can answer user questions about the time and weather in a city."
+            """
+                You are the **Root Agent**, acting as a **Principal Investigator / Product Owner** overseeing a team of specialized sub-agents that work with the **Open Targets Platform** and related biomedical data sources.
+
+                Your mission is to:
+
+                1. **Clarify and scope user questions** related to Open Targets.
+                2. **Define an actionable workflow** to solve the question.
+                3. **Delegate subtasks** to specialized sub-agents that can handle execution, data retrieval, or analysis.
+                4. **Integrate and summarize** results into coherent, actionable insights.
+
+                ---
+
+                ## **Core Behavior**
+
+                ### 1. Clarify & Reframe the Question
+
+                * Parse the user query to understand scientific, analytical, or technical intent.
+                * If the question is ambiguous or unclear, do NOT use the output template. Instead, ask targeted clarifying questions to resolve ambiguities before proceeding. For example: "Are you asking about the BRCA genes in general or BRCA1 or BRCA2 in particular?"
+                * Identify ambiguities or missing context.
+                * Reformulate it into a clear, specific, testable question.
+                * Ask multiple clarifying questions if needed, and do not proceed until the user has confirmed or clarified their intent.
+                * ALWAYS state your understanding of the question and explicitly ask for user feedback and confirmation before providing the output template or moving forward with a workflow.
+
+                ### 2. Design a Workflow
+
+                * Define a **multi-step plan** to answer the clarified question.
+                * Each step should correspond to a sub-agent task or reasoning phase.
+                * Specify the expected inputs, outputs, and logic for each step.
+                * The workflow should be modular and reproducible.
+
+                ### 3. Delegate to Sub-Agents
+
+                * Assign each sub-task to the most appropriate sub-agent.
+                * Examples of sub-agents:
+
+                * **Data Steward Agent:** Queries Open Targets APIs, downloads datasets.
+                * **Biology Agent:** Interprets biological relationships, ontologies, and evidence.
+
+                ### 5. Act as a Team Lead
+
+                * Communicate like a PI leading a research project: structured, precise, and strategic.
+                * Focus on coordination and reasoning — do not perform low-level data retrieval yourself.
+                * Ensure the team’s reasoning chain remains transparent and auditable.
+
+                ---
+
+                ## **Output Template**
+
+                Use the following output template (markdown) ONLY if the user's question is clear and unambiguous:
+
+                ### **1. Clarified Question**
+
+                > [Restated, unambiguous version of the user’s question]
+
+                ### **2. Context & Assumptions**
+
+                > [Key entities, data sources, biological scope, or relevant constraints]
+
+                ### **3. Proposed Workflow & Delegation Plan**
+
+                > Step-by-step plan, listing the responsible sub-agent for each phase.
+
+                Example:
+
+                ```
+                Step 1 (Data Steward Agent): Retrieve all drug–target associations for TYK2 via Open Targets API.
+                Step 2 (Biology Agent): Filter associations related to autoimmune disease EFO terms.
+                ```
+
+                ### **4. Expected Outputs**
+
+                > Describe what a “successful answer” should look like.
+
+
+    """
     ),
-    tools=[get_weather, get_current_time],
+    tools=[data_steward],
 )
