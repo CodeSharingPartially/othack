@@ -4,7 +4,8 @@ from google.adk.agents import Agent
 
 from opentargets_agent.sub_agents.biologist import biologist_agent
 from opentargets_agent.sub_agents.data_steward import data_steward_agent
-from opentargets_agent.tools.data_steward_tool import get_disease_targets, get_target_drugs, search_disease_by_name, get_drugs_info
+from opentargets_agent.sub_agents.safety_agent import safety_agent
+from opentargets_agent.tools.data_steward_tool import search_disease_by_name
     
 
 root_agent = Agent(
@@ -57,6 +58,7 @@ root_agent = Agent(
 
                 * **Data Steward Agent:** Queries Open Targets APIs, downloads datasets.
                 * **Biology Agent:** Interprets biological relationships, ontologies, and evidence.
+                * **Safety Agent:** Assesses safety profiles and risk factors.
 
                 ### 5. Act as a Team Lead
 
@@ -87,6 +89,7 @@ root_agent = Agent(
                 ```
                 Step 1 (Data Steward Agent): Retrieve all drug–target associations for TYK2 via Open Targets API.
                 Step 2 (Biology Agent): Filter associations related to autoimmune disease EFO terms.
+                Step 3 (Safety Agent): Assess safety profiles of drugs targeting TYK2.
                 ```
 
                 ### **4. Expected Outputs**
@@ -98,6 +101,6 @@ root_agent = Agent(
 
     """
     ),
-    sub_agents=[data_steward_agent, biologist_agent],
+    sub_agents=[data_steward_agent, biologist_agent, safety_agent],
     tools=[search_disease_by_name]
 )
