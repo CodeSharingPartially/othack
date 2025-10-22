@@ -96,4 +96,5 @@ root_agent = Agent(
 
     """
     ),
+    agents=[data_steward_agent]
 )
