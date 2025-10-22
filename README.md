@@ -31,11 +31,17 @@ Create the folder
 
     mkdir multi_tool_agent/
 
+To run it locally:
+```sh
+adk web 
+```
 
+To deploy it to Google Cloud:
+```sh
+gcloud auth login
 
+# Change the service_name to your own
+adk deploy cloud_run --project=opentargets-hack25cam-309 --region=europe-west1 --service_name=paultestservice --app_name=opentargets-agent --with_ui ./
+```
 
-You can run it :
-    # terminal
-    adk run # not needed? my_agent
-    # web interface
-    adk web --port 8000 # not needed? my_agent
+For Windows user, due to the bug in ADK, you need to use WSL. Also gcloud is the only way to authenticate, the API key simply does not work.
