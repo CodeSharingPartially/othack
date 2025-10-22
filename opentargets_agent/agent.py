@@ -2,6 +2,7 @@ import datetime
 # from zoneinfo import ZoneInfo
 from google.adk.agents import Agent
 
+from opentargets_agent.sub_agents.biologist import biologist_agent
 from opentargets_agent.sub_agents.data_steward import data_steward_agent
     
 
@@ -96,5 +97,5 @@ root_agent = Agent(
 
     """
     ),
-    agents=[data_steward_agent]
+    sub_agents=[data_steward_agent, biologist_agent],
 )
